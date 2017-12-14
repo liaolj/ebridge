@@ -11,7 +11,6 @@ package ebridge
 import "C"
 import (
 	"errors"
-	"fmt"
 	"unsafe"
 )
 
@@ -30,17 +29,32 @@ func LongGet(pv string) (int, error) {
 	return *result, nil
 }
 
-func Edemo() int {
-	d := new(int)
-	C.ezcaGet(C.CString("epicsHost:ai1"), C.ezcaLong, 1, unsafe.Pointer(d))
-	fmt.Printf("d=[%d]\n", *d)
-	return *d
+func StringGet(pv string) (string, error) {
+	ezcaInit()
+	rawRsult := make([]byte, 100)
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, unsafe.Pointer(rawRsult))
+	if ezcaReturn != C.EZCA_OK {
+		return "", errors.New("long PV获取失败")
+	}
+	return string(rawRsult), nil
 }
 
-func Reverse(s string) string {
-	r := []rune(s)
-	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
-		r[i], r[j] = r[j], r[i]
+func DoubleGet(pv string) (float64, error) {
+	ezcaInit()
+	result := new(float64)
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaDouble, 1, unsafe.Pointer(result))
+	if ezcaReturn != C.EZCA_OK {
+		return -1, errors.New("long PV获取失败")
 	}
-	return string(r)
+	return *result, nil
+}
+
+func BoolGet(pv string) (int16, error) {
+	ezcaInit()
+	result := new(int16)
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaByte, 1, unsafe.Pointer(result))
+	if ezcaReturn != C.EZCA_OK {
+		return -1, errors.New("long PV获取失败")
+	}
+	return *result, nil
 }
