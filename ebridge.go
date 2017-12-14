@@ -1,8 +1,7 @@
 package ebridge
-
 /*
-#cgo CFLAGS: -I./include -I/opt/egcs/epics/base/include -I/opt/egcs/epics/base/include/os/Linux
-#cgo LDFLAGS: -L./lib/linux-x86_64 -lezca
+#cgo CFLAGS: -I/opt/egcs/epics/extensions/include -I/opt/egcs/epics/base/include -I/opt/egcs/epics/base/include/os/Linux
+#cgo LDFLAGS: -L/opt/egcs/epics/extensions/lib/linux-x86_64 -lezca
 #include <stdio.h>
 #include <tsDefs.h>
 #include <cadef.h>
