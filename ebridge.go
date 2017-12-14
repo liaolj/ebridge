@@ -31,15 +31,19 @@ func LongGet(pv string) (int, error) {
 
 func StringGet(pv string) (string, error) {
 	ezcaInit()
-	//rawResult := make([]int, 100)
+	rawResult := C.malloc(100 * C.sizeof(C.char))
 	byteResult := make([]byte, 100)
 
-	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, C.CByte(byteResult))
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, rawResult)
+	C.printf("%s", rawResult)
 
 	if ezcaReturn != C.EZCA_OK {
 		return "", errors.New("long PV获取失败")
+		C.free(rawResult)
 	}
-	return string(byteResult), nil
+	result := C.GoString(rawResult)
+	C.free(rawResult)
+	return C.GoString(rawResult), nil
 }
 
 func DoubleGet(pv string) (float64, error) {
