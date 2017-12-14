@@ -31,6 +31,18 @@ func LongGet(pv string) (int, error) {
 
 func StringGet(pv string) (string, error) {
 	ezcaInit()
+	var src unsafe.Pointer
+
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, src)
+
+	if ezcaReturn != C.EZCA_OK {
+		return "", errors.New("long PV获取失败")
+	}
+	return string(C.GoBytes(src, 100)), nil
+}
+
+func StringGet1(pv string) (string, error) {
+	ezcaInit()
 	rawResult := C.malloc(100 * C.sizeof(C.char))
 	byteResult := make([]byte, 100)
 
