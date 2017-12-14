@@ -37,7 +37,7 @@ func StringGet(pv string) (string, error) {
 	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, src)
 
 	if ezcaReturn != C.EZCA_OK {
-		return "", errors.New("long PV获取失败")
+		return "", errors.New("string PV获取失败")
 	}
 	return string(C.GoBytes(src, 100)), nil
 }
@@ -47,7 +47,7 @@ func DoubleGet(pv string) (float64, error) {
 	result := new(float64)
 	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaDouble, 1, unsafe.Pointer(result))
 	if ezcaReturn != C.EZCA_OK {
-		return -1, errors.New("long PV获取失败")
+		return -1, errors.New("double PV获取失败")
 	}
 	return *result, nil
 }
@@ -57,7 +57,7 @@ func BoolGet(pv string) (int16, error) {
 	result := new(int16)
 	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaByte, 1, unsafe.Pointer(result))
 	if ezcaReturn != C.EZCA_OK {
-		return -1, errors.New("long PV获取失败")
+		return -1, errors.New("bool PV获取失败")
 	}
 	return *result, nil
 }
