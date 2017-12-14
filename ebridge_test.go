@@ -5,6 +5,6 @@ import (
 )
 
 func TestLongPVGet(t *testing.T) {
-	d := edemo()
+	d := Edemo()
 	t.Fatalf("d : %d", d)
 }

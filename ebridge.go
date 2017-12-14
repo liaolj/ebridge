@@ -14,7 +14,7 @@ import (
 	"unsafe"
 )
 
-func edemo() int {
+func Edemo() int {
 	d := new(int)
 	C.ezcaGet(C.CString("epicsHost:ai1"), C.ezcaLong, 1, unsafe.Pointer(d))
 	fmt.Printf("d=[%d]\n", *d)
