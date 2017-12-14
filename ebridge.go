@@ -10,9 +10,25 @@ package ebridge
 */
 import "C"
 import (
+	"errors"
 	"fmt"
 	"unsafe"
 )
+
+func ezcaInit() {
+	C.ezcaSetTimeout(0.5)
+	C.ezcaSetRetryCount(3)
+}
+
+func LongGet(pv string) (int, error) {
+	ezcaInit()
+	result := new(int)
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaLong, 1, unsafe.Pointer(result))
+	if ezcaReturn != C.EZCA_OK {
+		return -1, errors.New("long PV获取失败")
+	}
+	return *result, nil
+}
 
 func Edemo() int {
 	d := new(int)
