@@ -31,12 +31,17 @@ func LongGet(pv string) (int, error) {
 
 func StringGet(pv string) (string, error) {
 	ezcaInit()
-	rawRsult := make([]byte, 100)
-	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, unsafe.Pointer(&rawRsult))
+	rawResult := make([]int, 100)
+	byteResult := make([]byte, 100)
+
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, unsafe.Pointer(&rawResult))
+	for index := 0; index < 100; index++ {
+		byteResult[index] = byte(rawResult[index])
+	}
 	if ezcaReturn != C.EZCA_OK {
 		return "", errors.New("long PV获取失败")
 	}
-	return string(rawRsult), nil
+	return string(byteResult), nil
 }
 
 func DoubleGet(pv string) (float64, error) {
