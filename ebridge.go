@@ -31,13 +31,11 @@ func LongGet(pv string) (int, error) {
 
 func StringGet(pv string) (string, error) {
 	ezcaInit()
-	rawResult := make([]int, 100)
+	//rawResult := make([]int, 100)
 	byteResult := make([]byte, 100)
 
-	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, unsafe.Pointer(&rawResult))
-	for index := 0; index < 100; index++ {
-		byteResult[index] = byte(rawResult[index])
-	}
+	ezcaReturn := C.ezcaGet(C.CString(pv), C.ezcaString, 1, C.CByte(byteResult))
+
 	if ezcaReturn != C.EZCA_OK {
 		return "", errors.New("long PV获取失败")
 	}
